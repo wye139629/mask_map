@@ -31,6 +31,27 @@
 #mapid{
   height: 100vh;
 }
+.leaflet-marker-icon{
+  text-align: center;
+  line-height: 40px;
+}
+.marker-cluster{
+  border-radius: 50%;
+}
+.marker-cluster-small{
+  background-color: rgba(62, 179, 62,.4);
+
+}
+.marker-cluster-medium{
+  background-color: rgba(247, 247, 25,.4);
+}
+.marker-cluster-large{
+  background-color: rgba(253, 145, 5, 0.4);
+}
+
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -3,11 +3,14 @@ import {Fragment, useEffect, useState} from "react"
 import './App.css';
 import "leaflet/dist/leaflet.css";
 import LeafLet from "leaflet";
+import "leaflet.markercluster/dist/MarkerCluster.css"
+import "leaflet.markercluster/dist/leaflet.markercluster.js"
 
 
 function App() {
-  const [map, setMap] = useState(null)
   const [maskData, setMaskData] = useState(null)
+  // const [map, setMap] = useState(null)
+
   useEffect(() => {
     async function fetchMaskData(params) {
       const response =  await fetch("https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json")
@@ -19,7 +22,7 @@ function App() {
 
   useEffect(() => {
     if(!maskData)return
-    console.log(maskData)
+    // console.log(maskData)
     const osmUrl = " https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       navigator.geolocation.getCurrentPosition(function(position){
         let center = [position.coords.latitude, position.coords.longitude]
@@ -41,15 +44,15 @@ function App() {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
         }).addTo(myMap);
         LeafLet.marker(center,{icon: greenIcon}).addTo(myMap).bindPopup("Your are here.").openPopup()
+        let markers = new LeafLet.markerClusterGroup().addTo(myMap)
+
         maskData.features.map((data)=>{
-          LeafLet.marker([data.geometry.coordinates[1],data.geometry.coordinates[0]],{icon: greenIcon}).addTo(myMap)
-                // LeafLet.marker(data.geometry.coordinates,{icon: greenIcon}).addTo(myMap)
+          // console.log(data.properties)
+          markers.addLayer(LeafLet.marker([data.geometry.coordinates[1],data.geometry.coordinates[0]],{icon: greenIcon}).bindPopup("<h3>"+data.properties.name+"</h3>" + "<p>成人口罩數量:"+data.properties.mask_adult +"<br/>"+ "兒童口罩數量:"+data.properties.mask_child+"</p>"))
 
         })
+        myMap.addLayer(markers)
       });
-    return () => {
-
-    }
   },[maskData])
 
   return (
