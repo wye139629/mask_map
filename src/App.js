@@ -6,10 +6,21 @@ import LeafLet from "leaflet";
 
 
 function App() {
-  const osmUrl = " https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  useEffect(async() => {
+  const [map, setMap] = useState(null)
+  const [maskData, setMaskData] = useState(null)
+  useEffect(() => {
+    async function fetchMaskData(params) {
+      const response =  await fetch("https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json")
+      const json = await response.json();
+      setMaskData(json)
+    }
+    fetchMaskData()
+  }, [])
 
-
+  useEffect(() => {
+    if(!maskData)return
+    console.log(maskData)
+    const osmUrl = " https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       navigator.geolocation.getCurrentPosition(function(position){
         let center = [position.coords.latitude, position.coords.longitude]
         let greenIcon = new LeafLet.Icon({
@@ -29,22 +40,18 @@ function App() {
           LeafLet.tileLayer(osmUrl, {
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
         }).addTo(myMap);
-        let marker = LeafLet.marker(center,{icon: greenIcon}).addTo(myMap).bindPopup("Your are here.").openPopup()
+        LeafLet.marker(center,{icon: greenIcon}).addTo(myMap).bindPopup("Your are here.").openPopup()
+        maskData.features.map((data)=>{
+          LeafLet.marker([data.geometry.coordinates[1],data.geometry.coordinates[0]],{icon: greenIcon}).addTo(myMap)
+                // LeafLet.marker(data.geometry.coordinates,{icon: greenIcon}).addTo(myMap)
 
+        })
       });
-
-
-
-
-
-
-
-    // console.log(myMap.getCenter())
-    // let marker = LeafLet.marker([]).addTo(myMap);
     return () => {
 
     }
-  },[])
+  },[maskData])
+
   return (
     <div id="mapid"></div>
   );
