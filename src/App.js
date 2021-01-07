@@ -85,7 +85,6 @@ function App() {
 
         maskData.map((data)=>{
           markers.addLayer(LeafLet.marker([data.geometry.coordinates[1],data.geometry.coordinates[0]],{icon: greenIcon}).bindPopup("<h3>"+data.properties.name+"</h3>" + "<p>成人口罩數量:"+data.properties.mask_adult +"<br/>"+ "兒童口罩數量:"+data.properties.mask_child+"</p>"))
-
         })
         myMap.addLayer(markers)
         setMap(myMap)
@@ -214,7 +213,7 @@ function Pharmacy(props) {
     props.myMap.flyTo([pharmacy.geometry.coordinates[1],pharmacy.geometry.coordinates[0]],18,1)
   }
 return(
-  <li onClick={clickHandler}>
+  <li className="pharmacy" onClick={clickHandler}>
     <h3>{pharmacy.properties.name}</h3>
     <ul>
       <li>{pharmacy.properties.address}</li>
@@ -222,8 +221,8 @@ return(
     </ul>
     <div className="maskAmount">
       <ul>
-        <li>成人口罩 {pharmacy.properties.mask_adult}</li>
-        <li>兒童口罩 {pharmacy.properties.mask_child}</li>
+        <li className="adult">成人口罩 {pharmacy.properties.mask_adult}</li>
+        <li className="child">兒童口罩 {pharmacy.properties.mask_child}</li>
       </ul>
     </div>
   </li>
