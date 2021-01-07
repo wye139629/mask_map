@@ -9,6 +9,7 @@ import "leaflet.markercluster/dist/leaflet.markercluster.js"
 
 function App() {
   const [maskData, setMaskData] = useState(null)
+  const [selectPharmacy, setSelectPharmacy] = useState([])
   const [cities, setCities] = useState(null)
   const [allDistricts, setAllDistricts] = useState(null)
   const [districts, setDistricts] = useState([])
@@ -96,9 +97,25 @@ function App() {
     setDistricts(options)
   }
 
+  function updateSelectPharmacy(e){
+
+    let selectElement = e.target.parentNode.children
+    let selectValue = []
+    let pharmacy = []
+    Array.from(selectElement).map((value)=>{
+      selectValue.push(value)
+    })
+    maskData.map((data)=>{
+      if(data.properties.county === selectValue[0].value && data.properties.town === selectValue[1].value){
+        pharmacy.push(data)
+      }
+    })
+    setSelectPharmacy(pharmacy)
+  }
+
   return (
     <div className="container">
-      <SearchPanel dateData = {{today, day}} areaData = {{cities, districts, allDistricts}} updateDistrictOption={updateDistrictOption}/>
+      <SearchPanel dateData = {{today, day}} areaData = {{cities, districts, allDistricts}} selectPharmacy={selectPharmacy} myMap={map} updateDistrictOption={updateDistrictOption} updateSelectPharmacy={updateSelectPharmacy}/>
       <div id="mapid"></div>
     </div>
   );
@@ -106,10 +123,10 @@ function App() {
 
 
 function SearchPanel(props) {
-
   return(
     <div className="search-panel">
-      <SearchArea dateData = {props.dateData} areaData = {props.areaData} updateDistrictOption={props.updateDistrictOption}/>
+      <SearchArea dateData = {props.dateData} areaData = {props.areaData} updateDistrictOption={props.updateDistrictOption} updateSelectPharmacy={props.updateSelectPharmacy}/>
+      <PharmacyList selectPharmacy = {props.selectPharmacy} myMap ={props.myMap}/>
     </div>
   )
 }
@@ -144,6 +161,11 @@ function SearchArea(props) {
     props.updateDistrictOption(districtOption)
   }
 
+  function districtChangeHandler(e) {
+    props.updateSelectPharmacy(e)
+  }
+
+
   return(
     <div className="searchArea">
       <div className="dateTime">
@@ -155,7 +177,7 @@ function SearchArea(props) {
           <option value="">請選擇縣市</option>
           {cityOption}
         </select>
-        <select id="district" disabled>
+        <select id="district" onChange={districtChangeHandler} disabled >
           <option value="">請選擇行政區</option>
           {districts}
         </select>
@@ -164,9 +186,47 @@ function SearchArea(props) {
   )
 }
 
-function AreaOption(props) {
+function PharmacyList(props){
+  const selectPharmacy = props.selectPharmacy
+  if(selectPharmacy === [])return
+
+  return(
+    <div className="phamracyList">
+      <ul>
+      {
+      selectPharmacy.map((pharmacy)=>{
+        return <Pharmacy pharmacy={pharmacy} myMap={props.myMap}/>
+      })
+      }
+    </ul>
+  </div>
+  )
+}
+
+
+
+function Pharmacy(props) {
+  const pharmacy = props.pharmacy
+  // console.log(props.myMap)
+
+  function clickHandler(e){
+    // console.log(pharmacy.geometry.coordinates)
+    props.myMap.flyTo([pharmacy.geometry.coordinates[1],pharmacy.geometry.coordinates[0]],18,1)
+  }
 return(
-  <option></option>
+  <li onClick={clickHandler}>
+    <h3>{pharmacy.properties.name}</h3>
+    <ul>
+      <li>{pharmacy.properties.address}</li>
+      <li>{pharmacy.properties.phone}</li>
+    </ul>
+    <div className="maskAmount">
+      <ul>
+        <li>成人口罩 {pharmacy.properties.mask_adult}</li>
+        <li>兒童口罩 {pharmacy.properties.mask_child}</li>
+      </ul>
+    </div>
+  </li>
 )
 }
 
