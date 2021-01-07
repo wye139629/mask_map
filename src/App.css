@@ -28,9 +28,67 @@
   color: #61dafb;
 }
 
+
+.container{
+  display: flex;
+}
+.search-panel{
+  border-right: 1.5px solid black;
+  flex-grow: 1;
+  box-sizing: border-box;
+  /* padding: 10px; */
+}
+.searchArea{
+  background-color: rgb(61, 204, 223);
+  color: white;
+  padding: 10px;
+
+}
+.dateTime{
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  /* border: 1px solid red; */
+  box-sizing: border-box;
+}
+
+.dateTime .day{
+  font-size: 30px;
+}
+.dateTime .date{
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-left: auto;
+}
+
+.areaSelect{
+  display: flex;
+
+}
+
+.areaSelect select{
+  padding: 10px 20px;
+  display: block;
+  text-align: center;
+}
+#district{
+  margin-left: auto;
+}
+
+
 #mapid{
+  position: static;
+  flex-grow: 2;
   height: 100vh;
 }
+
+
+
+
+
+
+
+
 .leaflet-marker-icon{
   text-align: center;
   line-height: 40px;
