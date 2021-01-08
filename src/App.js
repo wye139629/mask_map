@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import LeafLet from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/leaflet.markercluster.js"
+import getDistance from 'geolib/es/getDistance';
 
 
 function App() {
@@ -83,9 +84,17 @@ function App() {
         LeafLet.marker(center,{icon: greenIcon}).addTo(myMap).bindPopup("Your are here.").openPopup()
         let markers = new LeafLet.markerClusterGroup().addTo(myMap)
 
+
+        let nearByPharmacy = []
         maskData.map((data)=>{
           markers.addLayer(LeafLet.marker([data.geometry.coordinates[1],data.geometry.coordinates[0]],{icon: greenIcon}).bindPopup("<h3>"+data.properties.name+"</h3>" + "<p>成人口罩數量:"+data.properties.mask_adult +"<br/>"+ "兒童口罩數量:"+data.properties.mask_child+"</p>"))
+
+           if(getDistance(center,[data.geometry.coordinates[1], data.geometry.coordinates[0]])/1000 < 1){
+             nearByPharmacy.push(data)
+           }
         })
+        // console.log(nearByPharmacy)
+        setSelectPharmacy(nearByPharmacy)
         myMap.addLayer(markers)
         setMap(myMap)
       });
@@ -111,6 +120,8 @@ function App() {
     })
     setSelectPharmacy(pharmacy)
   }
+
+  // console.log(selectPharmacy)
 
   return (
     <div className="container">
@@ -211,6 +222,8 @@ function Pharmacy(props) {
   function clickHandler(e){
     // console.log(pharmacy.geometry.coordinates)
     props.myMap.flyTo([pharmacy.geometry.coordinates[1],pharmacy.geometry.coordinates[0]],18,1)
+
+
   }
 return(
   <li className="pharmacy" onClick={clickHandler}>

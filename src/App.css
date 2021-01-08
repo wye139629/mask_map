@@ -36,12 +36,14 @@
   border-right: 1.5px solid black;
   flex-grow: 1;
   box-sizing: border-box;
+  max-width: 350px;
   /* padding: 10px; */
 }
 .searchArea{
   background-color: rgb(61, 204, 223);
   color: white;
   padding: 10px;
+  height: 15vh;
 
 }
 .dateTime{
@@ -75,6 +77,15 @@
   margin-left: auto;
 }
 
+.phamracyList{
+  /* background-color: blue; */
+  height: 85vh;
+  overflow: auto;
+
+  /* overflow: hidden; */
+}
+.phamracyList >ul{
+}
 
 #mapid{
   position: static;
