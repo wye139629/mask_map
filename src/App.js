@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import {Fragment, useEffect, useState} from "react"
 import './App.css';
 import "leaflet/dist/leaflet.css";
+import "./pharmacy_list.css"
 import LeafLet from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/leaflet.markercluster.js"
@@ -37,7 +38,7 @@ function App() {
               location: [data.geometry.coordinates[1], data.geometry.coordinates[0]]
             }
           }
-          // console.log(data.properties)
+
         }
       })
       setCities(cities)
@@ -93,7 +94,6 @@ function App() {
              nearByPharmacy.push(data)
            }
         })
-        // console.log(nearByPharmacy)
         setSelectPharmacy(nearByPharmacy)
         myMap.addLayer(markers)
         setMap(myMap)
@@ -121,7 +121,6 @@ function App() {
     setSelectPharmacy(pharmacy)
   }
 
-  // console.log(selectPharmacy)
 
   return (
     <div className="container">
@@ -201,8 +200,8 @@ function PharmacyList(props){
   if(selectPharmacy === [])return
 
   return(
-    <div className="phamracyList">
-      <ul>
+    <div className="phamracyListArea">
+      <ul className="phamracyList">
       {
       selectPharmacy.map((pharmacy)=>{
         return <Pharmacy pharmacy={pharmacy} myMap={props.myMap}/>
@@ -220,9 +219,7 @@ function Pharmacy(props) {
   // console.log(props.myMap)
 
   function clickHandler(e){
-    // console.log(pharmacy.geometry.coordinates)
     props.myMap.flyTo([pharmacy.geometry.coordinates[1],pharmacy.geometry.coordinates[0]],18,1)
-
 
   }
 return(
