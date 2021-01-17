@@ -1,45 +1,50 @@
-ul{
-  list-style: none;
-  margin: 0;
-  padding: 0;
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
-.phamracyListArea{
-  height: 80vh;
-  overflow: auto;
+.phamracyListArea {
+    height: 80vh;
+    overflow: auto;
 }
-.pharmacyList h3{
-  margin: 10px 0;
-  font-size: 20px;
-  font-weight: 400;
-  padding-left: 15px;
+@media screen and (max-width: 768px) {
+    .phamracyListArea {
+        height: 35vh;
+    }
 }
-.pharmacy{
-  padding: 10px;
+.pharmacyList h3 {
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: 400;
+    padding-left: 15px;
 }
-.pharmacy + .pharmacy{
-  border-top: 1px solid grey;
+.pharmacy {
+    padding: 10px;
 }
-.pharmacy > ul{
-  margin: 10px 0;
-  padding-left: 15px;
+.pharmacy + .pharmacy {
+    border-top: 1px solid grey;
+}
+.pharmacy > ul {
+    margin: 10px 0;
+    padding-left: 15px;
 }
 
-.pharmacy > ul li + li{
-  margin-top: 10px;
+.pharmacy > ul li + li {
+    margin-top: 10px;
 }
-.maskAmount ul{
-  display: flex;
-  padding: 0 15px;
+.maskAmount ul {
+    display: flex;
+    padding: 0 15px;
 }
-.maskAmount ul li{
-  padding: 10px 15px;
-  border-radius: 30px;
-  color: white;
+.maskAmount ul li {
+    padding: 10px 15px;
+    border-radius: 30px;
+    color: white;
 }
-.maskAmount ul .adult{
-  background-color: rgb(101, 167, 228);
+.maskAmount ul .adult {
+    background-color: rgb(101, 167, 228);
 }
-.maskAmount ul .child{
-  margin-left: auto;
-  background-color: rgb(247, 193, 94);
+.maskAmount ul .child {
+    margin-left: auto;
+    background-color: rgb(247, 193, 94);
 }

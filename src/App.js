@@ -6,9 +6,11 @@ import LeafLet from 'leaflet';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import getDistance from 'geolib/es/getDistance';
+import Spinner from 'react-bootstrap/Spinner';
 
 function App() {
     const [maskData, setMaskData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [selectPharmacy, setSelectPharmacy] = useState([]);
     const [cities, setCities] = useState(null);
     const [allDistricts, setAllDistricts] = useState(null);
@@ -56,6 +58,7 @@ function App() {
                     }
                 }
             });
+            setLoading(false);
             setCities(cities);
             setAllDistricts(districts);
         };
@@ -165,7 +168,7 @@ function App() {
     }
 
     return (
-        <div className="container">
+        <div className="map-container">
             <SearchPanel
                 dateData={{ today, day }}
                 areaData={{ cities, districts, allDistricts }}
@@ -174,7 +177,7 @@ function App() {
                 updateDistrictOption={updateDistrictOption}
                 updateSelectPharmacy={updateSelectPharmacy}
             />
-            <div id="mapid"></div>
+            <div id="mapid">{loading && <Spinner animation="border" />}</div>
         </div>
     );
 }
@@ -200,13 +203,13 @@ function SearchArea(props) {
     const { today, day } = props.dateData;
     const { cities, districts, allDistricts } = props.areaData;
     const checkDay = {
+        0: '星期日',
         1: '星期一',
         2: '星期二',
         3: '星期三',
         4: '星期四',
         5: '星期五',
         6: '星期六',
-        7: '星期日',
     };
     const cityOption = [];
     for (let city in cities) {
